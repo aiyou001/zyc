@@ -1,0 +1,45 @@
+1、下载JSTL标签所需要的jar包
+下载链接：http://static.runoob.com/download/jakarta-taglibs-standard-1.1.2.tar.gz
+解压之后，将jakarta-taglibs-standard-1.1.2/lib/下的两个jar文件：standard.jar和jstl.jar文件拷贝到/WEB-INF/lib/下。 然后添加到构建路径（add to build path）
+
+2、在需要使用jstl标签的页面头部，加上
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+3、然后就可以使用jstl标签了
+例子1：(c:forEach的for(String s :list)用法)：
+后台代码：（向页面扔了1个list，list里面装着100个User对象）
+ List<User> list=new ArrayList<User>();
+        for(int i=0;i<100;i++){
+            User user=new User(name,idcard+i,tel,sex,address);
+            list.add(user);
+        }
+        req.setAttribute("userList",list);
+
+网页代码：（items=要循环的对象，这里的话就是后台扔出来的list，var=要循环的对象里面的东西，也就是
+list里面的每一个user，varstatus=循环的状态，可以从varstatus里面取出各种各样的东西，比如说序号）
+<c:forEach items="${userList}" var="x" varStatus="i">
+    序号：${i.index+1}
+    姓名：${x.name}
+    身份证号：${x.idcard}
+    性别：${x.sex}
+    手机号：${x.tel}
+    地址：${x.address}
+    <br>
+</c:forEach>
+
+例子2（<c:forEach>的for(int i=0;i<100;i++)用法）:
+<c:forEach begin="0" end="100" step="1" varStatus="i">
+    ${i.index}
+</c:forEach>
+
+
+4、<c:if>标签
+<c:if test="${i.index%2==0}">
+        ${i.index}是个偶数<br>
+</c:if>
+等价于java的
+if(i%2==0){
+	System.out.println(i+"是个偶数")
+}
